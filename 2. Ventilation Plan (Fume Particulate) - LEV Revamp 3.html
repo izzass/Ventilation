@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Confined Space Ventilation Plan (Activity Producing Fume/Particulate)</title>
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --border-color: #cbd5e1;
+      --green-bg: #dcfce7;
+      --red-bg: #fee2e2;
+    }
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0.75rem;
+      background: #f7fafc;
+      color: #111827;
+      font-size: 0.8rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.2rem;
+      margin: 0 0 0.25rem;
+    }
+    h2 {
+      font-size: 0.95rem;
+      margin: 0.7rem 0 0.3rem;
+      color: #374151;
+    }
+    h3 {
+      font-size: 0.85rem;
+      margin: 0.6rem 0 0.2rem;
+      color: #4b5563;
+    }
+
+    .section {
+      background: #ffffff;
+      border-radius: 0.4rem;
+      padding: 0.6rem;
+      margin-bottom: 0.4rem;
+      box-shadow: 0 1px 3px rgba(15,23,42,0.06);
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 0.7rem;
+    }
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 0.18rem 0.25rem;
+      vertical-align: middle;
+      white-space: nowrap;
+      text-align: center;
+    }
+    th {
+      background: #f1f5f9;
+      font-weight: 600;
+    }
+    td input[type="text"] {
+      text-align: left;
+    }
+
+    input[type="number"], input[type="text"], textarea {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 3px;
+      padding: 0.12rem 0.2rem;
+      font-size: 0.72rem;
+      background: #ffffff;
+    }
+    input[type="number"] {
+      text-align: center;
+    }
+    input[readonly] {
+      background: #f9fafb;
+      color: #111827;
+    }
+    textarea {
+      min-height: 2.4rem;
+      resize: vertical;
+    }
+
+    .template-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 0.35rem;
+      margin-bottom: 0.12rem;
+    }
+
+    .inline-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 0.3rem;
+    }
+
+    .field-pair {
+      display: grid;
+      grid-template-columns: 155px 1fr;
+      align-items: center;
+      gap: 0.2rem;
+      font-size: 0.75rem;
+      margin-bottom: 10px;  /* increased spacing */
+    }
+    .field-pair label {
+      white-space: normal;
+    }
+
+    .shape-switch {
+      display: flex;
+      gap: 1.0rem;
+      font-size: 0.75rem;
+      margin: 0.3rem 0 0.4rem;
+      flex-wrap: wrap;
+    }
+    .shape-switch label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+    }
+    .shape-section {
+      display: none;
+      margin-top: 0.15rem;
+    }
+    .shape-section.active {
+      display: block;
+    }
+
+    .small {
+      font-size: 0.7rem;
+      font-style: italic;
+      text-align: left;
+      margin-top: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+    .top-note {
+      text-align: center;
+    }
+
+    .status-box {
+      padding: 0.12rem 0.25rem;
+      border-radius: 0.25rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      display: inline-block;
+      min-width: 130px;
+    }
+    .status-ok {
+      background: var(--green-bg);
+      border: 1px solid #22c55e;
+      color: #14532d;
+    }
+    .status-bad {
+      background: var(--red-bg);
+      border: 1px solid #ef4444;
+      color: #7f1d1d;
+    }
+
+
+/* Derated extraction print-safe layout */
+.derated-block {
+  display: block;
+  width: 100%;
+}
+.derated-block input[readonly]{
+  width: 100%;
+}
+.print-status {
+  margin-top: 0.2rem;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+@media print {
+  .print-status {
+    border: 1px solid #000;
+    padding: 0.15rem 0.3rem;
+  }
+}
+
+    .signature-block { 
+      margin-bottom: 0.8rem; 
+    }
+    .signature-space {
+      height: 50px;
+      width: 100%;
+      display: block;
+    }
+
+    .actions { position: static; margin-top:0.5rem; display:flex; justify-content:flex-end; gap:0.4rem; }
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 0.28rem 0.8rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .btn-print {
+      background: #111827;
+      color: #f9fafb;
+    }
+    .btn-print:hover {
+      background: #020617;
+    }
+
+    /* Print settings: A4 + compressed layout */
+    @page {
+      size: A4 portrait;
+      margin: 8mm;
+    }
+
+    @media print {
+      .actions { display:none !important; }
+
+      html, body {
+        width: 210mm;
+        height: 297mm;
+      }
+      body {
+        margin: 0;
+        padding: 4mm;
+        background: #ffffff;
+        font-size: 0.7rem;
+      }
+      h1 { font-size: 1rem; }
+      h2 { font-size: 0.85rem; }
+      h3 { font-size: 0.8rem; }
+
+      .section {
+        box-shadow: none;
+        border-radius: 0;
+        margin-bottom: 0.25rem;
+        padding: 0.45rem;
+      }
+
+      .inline-grid { gap: 0.2rem; }
+      .field-pair {
+      display: grid;
+      grid-template-columns: 155px 1fr;
+      align-items: center;
+      gap: 0.2rem;
+      font-size: 0.75rem;
+      margin-bottom: 10px;  /* increased spacing */
+    }
+
+      table { font-size: 0.6rem; }
+      th, td { padding: 0.12rem 0.18rem; }
+
+      .signature-space { height: 40px !important; }
+      .signature-block { margin-bottom: 0.4rem; }
+
+      .actions { position: static; margin-top:0.5rem; display:flex; justify-content:flex-end; gap:0.4rem; }
+    }
+  
+/* Center all numeric inputs and numeric read-only outputs */
+input[type="number"],
+input[type="text"][readonly] {
+  text-align: center !important;
+}
+
+
+    /* Signature upload UI overrides */
+.signature-space {
+  height: 60px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border-color);
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.signature-space img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.signature-upload-wrapper {
+  margin-top: 0.15rem;
+  position: relative;
+  display: inline-block;
+}
+
+.signature-upload-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #111827;
+  color: #f9fafb;
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  border: none;
+}
+
+.signature-upload-label:hover {
+  background: #020617;
+}
+
+.signature-upload {
+  display: none;
+}
+
+@media print {
+  .signature-upload-wrapper {
+    display: none !important;
+  }
+}
+
+}
+
+</style>
+</head>
+<body>
+  <!-- Fixed print button at top-right -->
+  
+
+  <h1>Confined Space Ventilation Plan (Activity Producing Fume/Particulate)</h1>
+  <p class="small top-note"><em>Note: This type of ventilation can be applied when the required ACH determined by the release of contaminants of &gt;20 ACH is impossible or impractical to comply.</em></p>
+
+  <div class="section">
+    <div class="inline-grid">
+      <div>
+        <div class="template-label">Work Description</div>
+        <textarea id="workDesc"></textarea>
+      </div>
+      <div>
+        <div class="template-label">Area / Unit Location</div>
+        <textarea id="areaLocation"></textarea>
+      </div>
+      <div>
+        <div class="template-label">Equipment Name &amp; Number</div>
+        <textarea id="equipmentNameNo"></textarea>
+      </div>
+    </div>
+
+    <h3>Equipment Volume</h3>
+    <div class="shape-switch">
+
+<label><input type="radio" name="shape" value="cuboid" checked> Cuboid (L × W × H)</label>
+<label><input type="radio" name="shape" value="cylinder"> Cylinder (π × R² × H)</label>
+<label><input type="radio" name="shape" value="sphere"> Sphere (4/3 × π × R³)</label>
+<label><input type="radio" name="shape" value="other"> Others (m&sup3;)</label>
+    </div>
+
+    <div id="cuboidSection" class="shape-section active">
+      <div class="inline-grid">
+        <div class="field-pair">
+          <label for="len">Length - L (m)</label>
+          <input type="number" id="len" step="0.01">
+        </div>
+        <div class="field-pair">
+          <label for="wid">Width - W (m)</label>
+          <input type="number" id="wid" step="0.01">
+        </div>
+        <div class="field-pair">
+          <label for="hCuboid">Height - H (m)</label>
+          <input type="number" id="hCuboid" step="0.01">
+        </div>
+      </div>
+    </div>
+
+    <div id="cylinderSection" class="shape-section">
+      <div class="inline-grid">
+        <div class="field-pair">
+          <label for="rad">Radius - R (m)</label>
+          <input type="number" id="rad" step="0.01">
+        </div>
+        <div class="field-pair">
+          <label for="hCyl">Height - H (m)</label>
+          <input type="number" id="hCyl" step="0.01">
+        </div>
+      </div>
+    </div>
+
+<div id="sphereSection" class="shape-section">
+  <div class="inline-grid">
+    <div class="field-pair">
+      <label for="radSphere">Radius - R (m)</label>
+      <input type="number" id="radSphere" step="0.01">
+    </div>
+  </div>
+</div>
+
+<div id="otherSection" class="shape-section">
+  <div class="inline-grid">
+    <div class="field-pair">
+      <label for="otherVolume">Enter Volume - V (m³)</label>
+      <input type="number" id="otherVolume" step="0.01" placeholder="Key in measured / calculated volume">
+    </div>
+  </div>
+</div>
+
+
+    <div class="inline-grid" style="margin-top:0.4rem;">
+      <div class="field-pair">
+        <label for="equipVolume">Volume - V (m³)</label>
+        <input type="text" id="equipVolume" readonly>
+      </div>
+    </div>
+
+    <p class="small">
+      Reference: Cylinder V = 3.14 × R² × H &nbsp;&nbsp; Cuboid V = L × W × H &nbsp;&nbsp; Sphere V = 4/3 × 3.14 × R³ &nbsp;&nbsp; Conversion: 1 ft³/min = 1.7 m³/hr
+    </p>
+
+    <h3>Required Ventilation Rate</h3>
+    <div class="inline-grid">
+      <div class="field-pair">
+        <label for="ach">ACH (Air Changes per Hour)</label>
+        <input type="number" id="ach" value="10" step="1">
+      </div>
+      <div class="field-pair">
+        <label for="qVent">Required Ventilation Rate Q (m³/hr) [Q = V × ACH]</label>
+        <input type="text" id="qVent" readonly>
+      </div>
+    </div>
+
+    <p class="small">
+      In addition to the Q, tick the preferred method (LEV or GV) and complete the details:</p>
+
+    <div class="shape-switch">
+      <label><input type="radio" name="ventMethod" value="lev" checked> Local Exhaust Ventilation (LEV)</label>
+      <label><input type="radio" name="ventMethod" value="gv"> General Ventilation (GV)</label>
+    </div>
+
+    <div class="inline-grid">
+      
+      <div id="levSection" style="display:block;">
+        <h3>Local Exhaust Ventilation – LEV (extraction)</h3>
+        <p class="small">
+          Each working point shall have specific extraction point with capacity of <strong>600 m³/hr</strong>. The capture distance is ≤ 30 cm.
+        </p>
+
+        <div class="field-pair">
+          <label for="levPoints">Number of working point at one time</label>
+          <input type="number" id="levPoints" step="1">
+        </div>
+
+        <div class="field-pair">
+          <label for="reqExtraction"><strong>Required Extraction Rate (m³/hr)</strong> [No. of working points × 600 m³/hr]</label>
+          <input type="text" id="reqExtraction" readonly>
+        </div>
+
+        <h3 style="margin-top:0.6rem;">Extraction Specifications</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Model No.</th>
+              <th>Extraction Rate (m³/hr)</th>
+              <th>Quantity</th>
+              <th>Total Extraction Rate (m³/hr)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" id="levModel1"></td>
+              <td><input type="number" id="levRate1" step="1"></td>
+              <td><input type="number" id="levQty1" step="1"></td>
+              <td><input type="text" id="levTotal1" readonly></td>
+            </tr>
+            <tr>
+              <td><input type="text" id="levModel2"></td>
+              <td><input type="number" id="levRate2" step="1"></td>
+              <td><input type="number" id="levQty2" step="1"></td>
+              <td><input type="text" id="levTotal2" readonly></td>
+            </tr>
+            <tr>
+              <td><input type="text" id="levModel3"></td>
+              <td><input type="number" id="levRate3" step="1"></td>
+              <td><input type="number" id="levQty3" step="1"></td>
+              <td><input type="text" id="levTotal3" readonly></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="inline-grid" style="margin-top:0.4rem;">
+          <div class="field-pair">
+            <label for="levOverallTotal"><strong>Overall Total Extraction Rate (m³/hr)</strong></label>
+            <input type="text" id="levOverallTotal" readonly>
+          </div>
+          <div class="field-pair">
+            <label for="deratePct"><strong>Derating Factor (%)</strong></label>
+            <input type="number" id="deratePct" value="90" min="50" max="100" step="1">
+          </div>
+          <div class="field-pair">
+            <label for="levDerated"><strong>Overall Derated Extraction Rate (m³/hr)</strong></label>
+            <div class="derated-block">
+              <input type="text" id="levDerated" readonly>
+              <div id="levStatus" class="status-box print-status"></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="small">
+
+        </p>
+      </div>
+
+
+      <div id="gvSection" style="display:none;">
+        <h3>General Ventilation – GV (supply)</h3>
+        <p class="small">
+          It shall be added to the Required Ventilation Rate (Q). At each working point, the general ventilation capacity is 1800 m³/hr.
+        </p>
+        <div class="field-pair">
+          <label for="gvPoints">Number of working point at one time</label>
+          <input type="number" id="gvPoints" step="1">
+        </div>
+        <div class="field-pair">
+          <label for="gvVent">Required General Ventilation (m³/hr) [No. of working points × 1800 m³/hr]</label>
+          <input type="text" id="gvVent" readonly>
+        </div>
+        <div class="field-pair">
+          <label for="totalReqVent">Total Required Ventilation Rate (m³/hr) [Required General Ventilation + Q]</label>
+          <input type="text" id="totalReqVent" readonly>
+        </div>
+        <p class="small">
+          Overall blower ventilation rate shall be higher than Total Required Ventilation Rate.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Blower Specifications</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Model No.</th>
+        <th>Blower Ventilation Rate (m³/hr)</th>
+        <th>Quantity</th>
+        <th>Total Blower Ventilation Rate (m³/hr)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><input type="text" id="blowerModel1"></td>
+        <td><input type="number" id="blowerRate1" step="1"></td>
+        <td><input type="number" id="blowerQty1" step="1"></td>
+        <td><input type="text" id="blowerTotal1" readonly></td>
+      </tr>
+      <tr>
+        <td><input type="text" id="blowerModel2"></td>
+        <td><input type="number" id="blowerRate2" step="1"></td>
+        <td><input type="number" id="blowerQty2" step="1"></td>
+        <td><input type="text" id="blowerTotal2" readonly></td>
+      </tr>
+      <tr>
+        <td><input type="text" id="blowerModel3"></td>
+        <td><input type="number" id="blowerRate3" step="1"></td>
+        <td><input type="number" id="blowerQty3" step="1"></td>
+        <td><input type="text" id="blowerTotal3" readonly></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="inline-grid" style="margin-top:0.4rem;">
+    <div class="field-pair">
+      <label for="deratePctBlower"><strong>Derating Factor (%)</strong></label>
+      <input type="number" id="deratePctBlower" value="90" min="50" max="100" step="1">
+    </div>
+    <div class="field-pair">
+      <label for="overallBlower"><strong>Overall Derated Blower Ventilation Rate (m³/hr)</strong></label>
+      <input type="text" id="overallBlower" readonly>
+    </div>
+    <div class="field-pair">
+      <label>Status</label>
+      <span id="statusBox" class="status-box"></span>
+    </div>
+  </div>
+
+  <p class="small">
+    Document to be attached : equipment blower/extractor configuration, equipment engineering drawing, blower/extractor datasheet.
+  </p>
+
+  <h3>Signatures</h3>
+  <div class="inline-grid">
+    <div class="signature-block">
+      <div class="template-label">Prepared by </div>
+      <div class="signature-space" id="preparedSignatureBox"></div>
+      <div class="signature-upload-wrapper">
+        <label class="signature-upload-label" for="preparedSignatureFile">Upload Signature</label><input type="file" id="preparedSignatureFile" class="signature-upload" accept="image/*">
+      </div>
+      <input type="text" placeholder="Name">
+      <input type="text" placeholder="Position" style="margin-top:0.1rem;">
+      <input type="text" placeholder="Date" style="margin-top:0.1rem;">
+    </div>
+    <div class="signature-block">
+      <div class="template-label">Reviewed by </div>
+      <div class="signature-space" id="reviewedSignatureBox"></div>
+      <div class="signature-upload-wrapper">
+        <label class="signature-upload-label" for="reviewedSignatureFile">Upload Signature</label><input type="file" id="reviewedSignatureFile" class="signature-upload" accept="image/*">
+      </div>
+      <input type="text" placeholder="Name">
+      <input type="text" placeholder="Position" style="margin-top:0.1rem;">
+      <input type="text" placeholder="Date" style="margin-top:0.1rem;">
+    </div>
+    <div class="signature-block">
+      <div class="template-label">Approved by </div>
+      <div class="signature-space" id="approvedSignatureBox"></div>
+      <div class="signature-upload-wrapper">
+        <label class="signature-upload-label" for="approvedSignatureFile">Upload Signature</label><input type="file" id="approvedSignatureFile" class="signature-upload" accept="image/*">
+      </div>
+      <input type="text" placeholder="Name">
+      <input type="text" placeholder="Position" style="margin-top:0.1rem;">
+      <input type="text" placeholder="Date" style="margin-top:0.1rem;">
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const cuboidSection = document.getElementById("cuboidSection");
+      const cylinderSection = document.getElementById("cylinderSection");
+      const sphereSection = document.getElementById("sphereSection");
+      const otherSection = document.getElementById("otherSection");
+      const levSection = document.getElementById("levSection");
+      const gvSection = document.getElementById("gvSection");
+      levSection.style.display = "block";
+      gvSection.style.display = "none";
+
+      const volumeField = document.getElementById("equipVolume");
+      const qVentField = document.getElementById("qVent");
+      const totalReqField = document.getElementById("totalReqVent");
+      const statusBox = document.getElementById("statusBox");
+      const overallBlowerField = document.getElementById("overallBlower");
+      const achInput = document.getElementById("ach");
+
+      // ACH fixed at 10 and read-only
+      if (achInput) {
+        achInput.value = 10;
+        achInput.readOnly = true;
+      }
+
+      // Independent derating factors:
+      // - deratePct applies ONLY to LEV (extraction)
+      // - deratePctBlower applies ONLY to Blower Specifications
+      function getDerateLEV() {
+        const a = document.getElementById("deratePct");
+        const av = a ? parseFloat(a.value) : NaN;
+        const pct = (!isNaN(av) && av > 0) ? av : 90;
+        return pct / 100;
+      }
+
+      function getDerateBlower() {
+        const b = document.getElementById("deratePctBlower");
+        const bv = b ? parseFloat(b.value) : NaN;
+        const pct = (!isNaN(bv) && bv > 0) ? bv : 90;
+        return pct / 100;
+      }
+
+      function recalcVolume() {
+        const shape = document.querySelector('input[name="shape"]:checked').value;
+        let V = NaN;
+
+        
+// Reset volume
+if (shape === "cuboid") {
+  const L = parseFloat(document.getElementById("len").value);
+  const W = parseFloat(document.getElementById("wid").value);
+  const H = parseFloat(document.getElementById("hCuboid").value);
+  if (!isNaN(L) && !isNaN(W) && !isNaN(H)) {
+    V = L * W * H;
+  }
+} else if (shape === "cylinder") {
+  const R = parseFloat(document.getElementById("rad").value);
+  const H = parseFloat(document.getElementById("hCyl").value);
+  if (!isNaN(R) && !isNaN(H)) {
+    V = 3.14 * R * R * H;
+  }
+} else if (shape === "sphere") {
+  const R = parseFloat(document.getElementById("radSphere").value);
+  if (!isNaN(R)) {
+    V = (4 / 3) * 3.14 * R * R * R;
+  }
+} else if (shape === "other") {
+  const OV = parseFloat(document.getElementById("otherVolume").value);
+  if (!isNaN(OV)) {
+    V = OV;
+  }
+}
+
+        
+
+        if (!isNaN(V)) {
+          volumeField.value = Number(V.toFixed(2)).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        } else {
+          volumeField.value = "";
+        }
+
+        recalcVentilation();
+      }
+
+      function recalcVentilation() {
+        const V = parseFloat((volumeField.value || "").toString().replace(/,/g, ""));
+        if (!isNaN(V)) {
+          const q = V * 10; // Volume × 10
+          qVentField.value = Number(q.toFixed(1)).toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+        } else {
+          qVentField.value = "";
+        }
+        recalcLEV_GV();
+      }
+
+      
+      function recalcLEV_GV() {
+        // ===== LEV (Extractor) calculation =====
+        const levPoints = parseFloat(document.getElementById("levPoints").value);
+        const reqField = document.getElementById("reqExtraction");
+        const levOverallField = document.getElementById("levOverallTotal");
+        const levDeratedField = document.getElementById("levDerated");
+        const levStatus = document.getElementById("levStatus");
+
+        function fmt1(n){
+          return Number(n.toFixed(1)).toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+        }
+        function fmt0(n){
+          return Number(n.toFixed(0)).toLocaleString('en-US', {maximumFractionDigits: 0});
+        }
+
+        // Required Extraction Rate = working points × 600
+        let required = NaN;
+        if (!isNaN(levPoints) && levPoints > 0) {
+          required = levPoints * 600;
+          reqField.value = fmt0(required);
+        } else {
+          reqField.value = "";
+        }
+
+        // Table totals
+        function rowTotal(rateId, qtyId, outId) {
+          const rate = parseFloat(document.getElementById(rateId).value);
+          const qty = parseFloat(document.getElementById(qtyId).value);
+          const out = document.getElementById(outId);
+          let t = NaN;
+          if (!isNaN(rate) && !isNaN(qty)) {
+            t = rate * qty;
+            out.value = fmt1(t);
+          } else {
+            out.value = "";
+          }
+          return isNaN(t) ? 0 : t;
+        }
+
+        const t1 = rowTotal("levRate1", "levQty1", "levTotal1");
+        const t2 = rowTotal("levRate2", "levQty2", "levTotal2");
+        const t3 = rowTotal("levRate3", "levQty3", "levTotal3");
+        const overallExtraction = t1 + t2 + t3;
+
+        if (overallExtraction > 0) {
+          levOverallField.value = fmt1(overallExtraction);
+        } else {
+          levOverallField.value = "";
+        }
+
+        // Derated extraction + status vs required
+        if (overallExtraction > 0) {
+          const derate = getDerateLEV();
+
+          const derated = overallExtraction * derate;
+          levDeratedField.value = fmt1(derated);
+
+          if (!isNaN(required) && required > 0) {
+            if (derated >= required) {
+              levStatus.textContent = "Sufficient extractor capacity";
+              levStatus.className = "status-box status-ok";
+            } else {
+              levStatus.textContent = "Insufficient extractor capacity";
+              levStatus.className = "status-box status-bad";
+            }
+          } else {
+            levStatus.textContent = "";
+            levStatus.className = "status-box";
+          }
+        } else {
+          levDeratedField.value = "";
+          levStatus.textContent = "";
+          levStatus.className = "status-box";
+        }
+
+        // General ventilation and total required ventilation
+
+        const gvPoints = parseFloat(document.getElementById("gvPoints").value);
+        const gvVentField = document.getElementById("gvVent");
+        const qVent = parseFloat((qVentField.value || "").toString().replace(/,/g, ""));
+
+        let gvVent = NaN;
+        if (!isNaN(gvPoints)) {
+          gvVent = gvPoints * 1800;
+          gvVentField.value = Number(gvVent.toFixed(1)).toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+        } else {
+          gvVentField.value = "";
+        }
+
+        if (!isNaN(gvVent) && !isNaN(qVent)) {
+          const totalReq = gvVent + qVent;
+          totalReqField.value = Number(totalReq.toFixed(1)).toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+        } else {
+          totalReqField.value = "";
+        }
+
+        recalcStatus();
+      }
+
+      function recalcBlowers() {
+        function rowTotal(rateId, qtyId, outId) {
+          const rate = parseFloat(document.getElementById(rateId).value);
+          const qty = parseFloat(document.getElementById(qtyId).value);
+          const out = document.getElementById(outId);
+          let t = NaN;
+          if (!isNaN(rate) && !isNaN(qty)) {
+            t = rate * qty;
+            out.value = Number(t.toFixed(1)).toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+          } else {
+            out.value = "";
+          }
+          return isNaN(t) ? 0 : t;
+        }
+
+        const t1 = rowTotal("blowerRate1", "blowerQty1", "blowerTotal1");
+        const t2 = rowTotal("blowerRate2", "blowerQty2", "blowerTotal2");
+        const t3 = rowTotal("blowerRate3", "blowerQty3", "blowerTotal3");
+
+        const overall = t1 + t2 + t3;
+
+        if (overall > 0) {
+          const derate = getDerateBlower();
+          const ovDerated = overall * derate;
+          overallBlowerField.value = Number(ovDerated.toFixed(1)).toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+        } else {
+          overallBlowerField.value = "";
+        }
+
+        recalcStatus();
+      }
+
+      function recalcStatus() {
+        const overall = parseFloat((overallBlowerField.value || "").toString().replace(/,/g, ""));
+        const totalReq = parseFloat((totalReqField.value || "").toString().replace(/,/g, ""));
+        const qVent = parseFloat((qVentField.value || "").toString().replace(/,/g, ""));
+        const methodRadio = document.querySelector('input[name="ventMethod"]:checked');
+        const method = methodRadio ? methodRadio.value : "lev";
+
+        let target = NaN;
+        if (method === "lev") {
+          // LEV: compare blower capacity against Required Ventilation Rate Q only
+          target = qVent;
+        } else {
+          // GV: compare blower capacity against Total Required Ventilation Rate
+          target = totalReq;
+        }
+
+        if (!isNaN(overall) && !isNaN(target) && overall > 0 && target > 0) {
+          if (overall >= target) {
+            statusBox.textContent = "Sufficient blower capacity";
+            statusBox.className = "status-box status-ok";
+          } else {
+            statusBox.textContent = "Insufficient blower capacity";
+            statusBox.className = "status-box status-bad";
+          }
+        } else {
+          statusBox.textContent = "";
+          statusBox.className = "status-box";
+        }
+      }
+
+      // LEV / GV switch behaviour
+      document.querySelectorAll('input[name="ventMethod"]').forEach(function (radio) {
+        radio.addEventListener("change", function () {
+          const method = this.value;
+          if (method === "lev") {
+            levSection.style.display = "";
+            gvSection.style.display = "none";
+          } else {
+            levSection.style.display = "none";
+            gvSection.style.display = "";
+          }
+          recalcStatus();
+        });
+      });
+
+      // Shape switch behaviour
+      document.querySelectorAll('input[name="shape"]').forEach(function (radio) {
+  radio.addEventListener("change", function () {
+    const shape = this.value;
+
+    cuboidSection.classList.toggle("active", shape === "cuboid");
+    cylinderSection.classList.toggle("active", shape === "cylinder");
+    sphereSection.classList.toggle("active", shape === "sphere");
+    otherSection.classList.toggle("active", shape === "other");
+
+    // Clear fields of the hidden shapes (prevents stale values affecting calc)
+    if (shape !== "cuboid") {
+      document.getElementById("len").value = "";
+      document.getElementById("wid").value = "";
+      document.getElementById("hCuboid").value = "";
+    }
+    if (shape !== "cylinder") {
+      document.getElementById("rad").value = "";
+      document.getElementById("hCyl").value = "";
+    }
+    if (shape !== "sphere") {
+      document.getElementById("radSphere").value = "";
+    }
+    if (shape !== "other") {
+      document.getElementById("otherVolume").value = "";
+    }
+
+    recalcVolume();
+  });
+});
+
+      // Inputs for volume
+      ["len", "wid", "hCuboid", "rad", "hCyl", "radSphere", "otherVolume"].forEach(function (id) {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("input", recalcVolume);
+      });
+
+      
+      // Inputs for LEV & GV
+      ["levPoints", "levRate1", "levQty1", "levRate2", "levQty2", "levRate3", "levQty3", "gvPoints"].forEach(function (id) {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("input", recalcLEV_GV);
+      });
+
+// Inputs for blower rows
+      ["blowerRate1","blowerQty1","blowerRate2","blowerQty2","blowerRate3","blowerQty3"].forEach(function (id) {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("input", recalcBlowers);
+      });
+
+
+      // Inputs for derating factor (independent + recalc)
+      const derateLEVEl = document.getElementById("deratePct");
+      if (derateLEVEl) derateLEVEl.addEventListener("input", function(){
+        recalcLEV_GV();
+      });
+
+      const derateBlowerEl = document.getElementById("deratePctBlower");
+      if (derateBlowerEl) derateBlowerEl.addEventListener("input", function(){
+        recalcBlowers();
+      });
+
+      // Signature upload: draw image as background on the signature box (harder to save separately)
+      // Signature upload: render as <img> inside the box (prints reliably)
+function setupSignatureUpload(fileInputId, boxId) {
+  const fileInput = document.getElementById(fileInputId);
+  const box = document.getElementById(boxId);
+  if (!fileInput || !box) return;
+
+  fileInput.addEventListener("change", function () {
+    const file = this.files && this.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const dataUrl = e.target.result;
+
+      let img = box.querySelector("img");
+      if (!img) {
+        img = document.createElement("img");
+        box.innerHTML = "";
+        box.appendChild(img);
+      }
+      img.src = dataUrl;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+setupSignatureUpload("preparedSignatureFile", "preparedSignatureBox");
+      setupSignatureUpload("reviewedSignatureFile", "reviewedSignatureBox");
+      setupSignatureUpload("approvedSignatureFile", "approvedSignatureBox");
+
+      // Initial calculation
+      recalcVolume();
+    });
+  
+// Disable right-click on signature areas
+document.addEventListener("contextmenu", function (e) {
+  if (e.target.closest(".signature-space")) {
+    e.preventDefault();
+  }
+});
+  </script>
+
+
+<div class="actions">
+  <button class="btn-print" onclick="window.print()">🖨 Print Ventilation Plan</button>
+</div>
+
+</body>
+</html>

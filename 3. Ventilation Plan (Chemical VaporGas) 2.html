@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Confined Space Ventilation Plan (Activity Producing Chemical Vapor/Gas)</title>
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --border-color: #cbd5e1;
+      --blue-bg: #dbeafe;
+      --purple-bg: #e9d5ff;
+      --green-bg: #dcfce7;
+      --red-bg: #fee2e2;
+    }
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 1.5rem;
+      background: #f7fafc;
+      color: #111827;
+      font-size: 0.8rem;
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.4rem;
+      margin: 0 0 0.25rem;
+    }
+    h3 {
+      font-size: 0.95rem;
+      margin: 0.75rem 0 0.25rem;
+      color: #4b5563;
+    }
+
+    .section {
+      background: #ffffff;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(15,23,42,0.08);
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 0.25rem 0.35rem;
+      font-size: 0.78rem;
+      vertical-align: middle;
+      white-space: nowrap;
+      text-align: center;
+    }
+    th {
+      background: #f1f5f9;
+      font-weight: 600;
+    }
+    td input[type="text"] {
+      text-align: left;
+    }
+
+    input[type="number"], input[type="text"], textarea {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 3px;
+      padding: 0.12rem 0.2rem;
+      font-size: 0.76rem;
+      background: #ffffff;
+    }
+    input[type="number"] {
+      text-align: center;
+    }
+    input[readonly] {
+      background: #f9fafb;
+      color: #111827;
+    }
+    textarea {
+      min-height: 3rem;
+      resize: vertical;
+    }
+
+    .blue-col { background: var(--blue-bg); }
+    .purple-col { background: var(--purple-bg); }
+
+    .hidden-col {
+      display: none;
+    }
+
+    .template-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      margin-bottom: 0.15rem;
+    }
+    .inline-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+      gap: 0.5rem;
+    }
+    .field-pair {
+      display: grid;
+      grid-template-columns: 145px 1fr;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.78rem;
+    }
+    .field-pair label {
+      white-space: normal;
+    }
+
+    .small {
+      font-size: 0.78rem;
+      font-style: italic;
+      text-align: left;
+    }
+    .top-note { text-align: center; }
+
+    .shape-switch {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .shape-switch label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+    }
+    .shape-section {
+      display: none;
+      margin-top: 0.25rem;
+    }
+    .shape-section.active {
+      display: block;
+    }
+
+    .status-box {
+      padding: 0.15rem 0.3rem;
+      border-radius: 0.25rem;
+      font-size: 0.76rem;
+      font-weight: 600;
+      display: inline-block;
+      min-width: 150px;
+    }
+    .status-ok {
+      background: var(--green-bg);
+      border: 1px solid #22c55e;
+      color: #14532d;
+    }
+    .status-bad {
+      background: var(--red-bg);
+      border: 1px solid #ef4444;
+      color: #7f1d1d;
+    }
+
+    .signature-block {
+      margin-bottom: 0.8rem;
+    }
+    .signature-space {
+      height: 50px;
+      width: 100%;
+      display: block;
+    }
+
+    .actions {
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .btn-print {
+      background: #111827;
+      color: #f9fafb;
+    }
+    .btn-print:hover {
+      background: #020617;
+    }
+
+    .tfoot-label {
+      text-align: right;
+      font-weight: 600;
+      white-space: normal;
+      font-size: 0.75rem;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 8mm;
+    }
+
+    @media print {
+      html, body {
+        width: 210mm;
+        height: 297mm;
+      }
+      body {
+        margin: 0;
+        padding: 6mm;
+        background: #ffffff;
+      }
+      .section {
+        box-shadow: none;
+        border-radius: 0;
+        margin-bottom: 0.4rem;
+        padding: 0.6rem;
+      }
+      .inline-grid {
+        gap: 0.25rem;
+      }
+      th, td {
+        padding: 0.15rem 0.25rem;
+      }
+      .actions {
+        display: none !important;
+      }
+    }
+  
+/* Center all numeric inputs and numeric read-only outputs */
+input[type="number"],
+input[type="text"][readonly] {
+  text-align: center !important;
+}
+
+
+    /* Signature upload UI overrides */
+.signature-space {
+  height: 60px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border-color);
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.signature-space img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.signature-upload-wrapper {
+  margin-top: 0.15rem;
+  position: relative;
+  display: inline-block;
+}
+
+.signature-upload-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #111827;
+  color: #f9fafb;
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  border: none;
+}
+
+.signature-upload-label:hover {
+  background: #020617;
+}
+
+.signature-upload {
+  display: none;
+}
+
+@media print {
+  .signature-upload-wrapper {
+    display: none !important;
+  }
+}
+
+}
+
+</style>
+</head>
+<body>
+  <h1>Confined Space Ventilation Plan (Activity Producing Chemical Vapor/Gas)</h1>
+  <p class="small top-note"><em>Note: This type of ventilation can be applied when the required ACH determined by the release of contaminants is impossible or impractical to comply.</em></p>
+
+  <div class="section calculator">
+    <div class="inline-grid">
+      <div>
+        <div class="template-label">Work Description</div>
+        <textarea id="workDesc"></textarea>
+      </div>
+      <div>
+        <div class="template-label">Area / Unit Location</div>
+        <textarea id="areaLocation"></textarea>
+      </div>
+      <div>
+        <div class="template-label">Equipment Name &amp; Number</div>
+        <textarea id="equipmentNameNo"></textarea>
+      </div>
+    </div>
+
+    <h3>Equipment Volume</h3>
+    <div class="shape-switch">
+
+<label><input type="radio" name="shape" value="cuboid" checked> Cuboid (L × W × H)</label>
+<label><input type="radio" name="shape" value="cylinder"> Cylinder (π × R² × H)</label>
+<label><input type="radio" name="shape" value="sphere"> Sphere (4/3 × π × R³)</label>
+<label><input type="radio" name="shape" value="other"> Others (m&sup3;)</label>
+    </div>
+
+    <div id="cuboidSection" class="shape-section active">
+      <div class="inline-grid">
+        <div class="field-pair">
+          <label for="len">Length - L (m)</label>
+          <input type="number" id="len" step="0.01">
+        </div>
+        <div class="field-pair">
+          <label for="wid">Width - W (m)</label>
+          <input type="number" id="wid" step="0.01">
+        </div>
+        <div class="field-pair">
+          <label for="hCuboid">Height - H (m)</label>
+          <input type="number" id="hCuboid" step="0.01">
+        </div>
+      </div>
+    </div>
+
+    <div id="cylinderSection" class="shape-section">
+      <div class="inline-grid">
+        <div class="field-pair">
+          <label for="rad">Radius - R (m)</label>
+          <input type="number" id="rad" step="0.01">
+        </div>
+        <div class="field-pair">
+          <label for="hCyl">Height - H (m)</label>
+          <input type="number" id="hCyl" step="0.01">
+        </div>
+      </div>
+    </div>
+
+<div id="sphereSection" class="shape-section">
+  <div class="inline-grid">
+    <div class="field-pair">
+      <label for="radSphere">Radius - R (m)</label>
+      <input type="number" id="radSphere" step="0.01">
+    </div>
+  </div>
+</div>
+
+<div id="otherSection" class="shape-section">
+  <div class="inline-grid">
+    <div class="field-pair">
+      <label for="otherVolume">Enter Volume - V (m³)</label>
+      <input type="number" id="otherVolume" step="0.01" placeholder="Key in measured / calculated volume">
+    </div>
+  </div>
+</div>
+
+
+    <div class="inline-grid" style="margin-top:0.4rem;">
+      <div class="field-pair">
+        <label for="equipVolume">Volume - V (m³)</label>
+        <input type="text" id="equipVolume" readonly>
+      </div>
+    </div>
+
+    <p class="small">
+      Reference: Cylinder V = 3.14 × R² × H &nbsp;&nbsp; Cuboid V = L × W × H &nbsp;&nbsp; Sphere V = 4/3 × 3.14 × R³ &nbsp;&nbsp; Conversion: 1 ft³/min = 1.7 m³/hr
+    </p>
+
+    <h3>Required Ventilation Rate</h3>
+<h3>Chemical Generation Rate Calculator</h3>
+    <p class="small">Fill in the chemical data below.</p>
+
+    <table id="chemTable">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Main Chemical</th>
+          <th>Component in Main Chemical</th>
+          <th>% Component<br>in Main Chemical</th>
+          <th>Working Hours<br>per Day (h)</th>
+          <th>Volume Used<br>per Day (ℓ)</th>
+          <th>PEL (ppm)</th>
+          <th>Molecular Weight<br>(MW, g/mol)</th>
+          <th>Specific Gravity<br>(SG, kg/ℓ)</th>
+          <th class="blue-col hidden-col">Mass of Liquid<br>Evaporated (g/hr)</th>
+          <th class="purple-col hidden-col">Generation Rate<br>G (m³/hr)</th>
+          <th class="purple-col">Required Ventilation<br>Rate (m³/hr)</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr data-row="1">
+          <td>1</td>
+          <td><input type="text" class="mainChemical" /></td>
+          <td><input type="text" class="component" /></td>
+          <td><input type="number" class="pctComponent" step="0.01" /></td>
+          <td><input type="number" class="hoursPerDay" step="0.01" /></td>
+          <td><input type="number" class="volumePerDay" step="0.01" /></td>
+          <td><input type="number" class="pel" step="0.01" /></td>
+          <td><input type="number" class="mw" step="0.01" /></td>
+          <td><input type="number" class="sg" step="0.0001" /></td>
+          <td class="blue-col hidden-col"><input type="text" class="massEvap" readonly /></td>
+          <td class="purple-col hidden-col"><input type="text" class="genRate" readonly /></td>
+          <td class="purple-col"><input type="text" class="reqVent" readonly /></td>
+        </tr>
+
+        <tr data-row="2">
+          <td>2</td>
+          <td><input type="text" class="mainChemical" /></td>
+          <td><input type="text" class="component" /></td>
+          <td><input type="number" class="pctComponent" step="0.01" /></td>
+          <td><input type="number" class="hoursPerDay" step="0.01" /></td>
+          <td><input type="number" class="volumePerDay" step="0.01" /></td>
+          <td><input type="number" class="pel" step="0.01" /></td>
+          <td><input type="number" class="mw" step="0.01" /></td>
+          <td><input type="number" class="sg" step="0.0001" /></td>
+          <td class="blue-col hidden-col"><input type="text" class="massEvap" readonly /></td>
+          <td class="purple-col hidden-col"><input type="text" class="genRate" readonly /></td>
+          <td class="purple-col"><input type="text" class="reqVent" readonly /></td>
+        </tr>
+
+        <tr data-row="3">
+          <td>3</td>
+          <td><input type="text" class="mainChemical" /></td>
+          <td><input type="text" class="component" /></td>
+          <td><input type="number" class="pctComponent" step="0.01" /></td>
+          <td><input type="number" class="hoursPerDay" step="0.01" /></td>
+          <td><input type="number" class="volumePerDay" step="0.01" /></td>
+          <td><input type="number" class="pel" step="0.01" /></td>
+          <td><input type="number" class="mw" step="0.01" /></td>
+          <td><input type="number" class="sg" step="0.0001" /></td>
+          <td class="blue-col hidden-col"><input type="text" class="massEvap" readonly /></td>
+          <td class="purple-col hidden-col"><input type="text" class="genRate" readonly /></td>
+          <td class="purple-col"><input type="text" class="reqVent" readonly /></td>
+        </tr>
+
+        <tr data-row="4">
+          <td>4</td>
+          <td><input type="text" class="mainChemical" /></td>
+          <td><input type="text" class="component" /></td>
+          <td><input type="number" class="pctComponent" step="0.01" /></td>
+          <td><input type="number" class="hoursPerDay" step="0.01" /></td>
+          <td><input type="number" class="volumePerDay" step="0.01" /></td>
+          <td><input type="number" class="pel" step="0.01" /></td>
+          <td><input type="number" class="mw" step="0.01" /></td>
+          <td><input type="number" class="sg" step="0.0001" /></td>
+          <td class="blue-col hidden-col"><input type="text" class="massEvap" readonly /></td>
+          <td class="purple-col hidden-col"><input type="text" class="genRate" readonly /></td>
+          <td class="purple-col"><input type="text" class="reqVent" readonly /></td>
+        </tr>
+
+        <tr data-row="5">
+          <td>5</td>
+          <td><input type="text" class="mainChemical" /></td>
+          <td><input type="text" class="component" /></td>
+          <td><input type="number" class="pctComponent" step="0.01" /></td>
+          <td><input type="number" class="hoursPerDay" step="0.01" /></td>
+          <td><input type="number" class="volumePerDay" step="0.01" /></td>
+          <td><input type="number" class="pel" step="0.01" /></td>
+          <td><input type="number" class="mw" step="0.01" /></td>
+          <td><input type="number" class="sg" step="0.0001" /></td>
+          <td class="blue-col hidden-col"><input type="text" class="massEvap" readonly /></td>
+          <td class="purple-col hidden-col"><input type="text" class="genRate" readonly /></td>
+          <td class="purple-col"><input type="text" class="reqVent" readonly /></td>
+        </tr>
+
+        <tr data-row="6">
+          <td>6</td>
+          <td><input type="text" class="mainChemical" /></td>
+          <td><input type="text" class="component" /></td>
+          <td><input type="number" class="pctComponent" step="0.01" /></td>
+          <td><input type="number" class="hoursPerDay" step="0.01" /></td>
+          <td><input type="number" class="volumePerDay" step="0.01" /></td>
+          <td><input type="number" class="pel" step="0.01" /></td>
+          <td><input type="number" class="mw" step="0.01" /></td>
+          <td><input type="number" class="sg" step="0.0001" /></td>
+          <td class="blue-col hidden-col"><input type="text" class="massEvap" readonly /></td>
+          <td class="purple-col hidden-col"><input type="text" class="genRate" readonly /></td>
+          <td class="purple-col"><input type="text" class="reqVent" readonly /></td>
+        </tr>
+
+        <tr data-row="7">
+          <td>7</td>
+          <td><input type="text" class="mainChemical" /></td>
+          <td><input type="text" class="component" /></td>
+          <td><input type="number" class="pctComponent" step="0.01" /></td>
+          <td><input type="number" class="hoursPerDay" step="0.01" /></td>
+          <td><input type="number" class="volumePerDay" step="0.01" /></td>
+          <td><input type="number" class="pel" step="0.01" /></td>
+          <td><input type="number" class="mw" step="0.01" /></td>
+          <td><input type="number" class="sg" step="0.0001" /></td>
+          <td class="blue-col hidden-col"><input type="text" class="massEvap" readonly /></td>
+          <td class="purple-col hidden-col"><input type="text" class="genRate" readonly /></td>
+          <td class="purple-col"><input type="text" class="reqVent" readonly /></td>
+        </tr>
+
+        <tr data-row="8">
+          <td>8</td>
+          <td><input type="text" class="mainChemical" /></td>
+          <td><input type="text" class="component" /></td>
+          <td><input type="number" class="pctComponent" step="0.01" /></td>
+          <td><input type="number" class="hoursPerDay" step="0.01" /></td>
+          <td><input type="number" class="volumePerDay" step="0.01" /></td>
+          <td><input type="number" class="pel" step="0.01" /></td>
+          <td><input type="number" class="mw" step="0.01" /></td>
+          <td><input type="number" class="sg" step="0.0001" /></td>
+          <td class="blue-col hidden-col"><input type="text" class="massEvap" readonly /></td>
+          <td class="purple-col hidden-col"><input type="text" class="genRate" readonly /></td>
+          <td class="purple-col"><input type="text" class="reqVent" readonly /></td>
+        </tr>
+
+        <tr data-row="9">
+          <td>9</td>
+          <td><input type="text" class="mainChemical" /></td>
+          <td><input type="text" class="component" /></td>
+          <td><input type="number" class="pctComponent" step="0.01" /></td>
+          <td><input type="number" class="hoursPerDay" step="0.01" /></td>
+          <td><input type="number" class="volumePerDay" step="0.01" /></td>
+          <td><input type="number" class="pel" step="0.01" /></td>
+          <td><input type="number" class="mw" step="0.01" /></td>
+          <td><input type="number" class="sg" step="0.0001" /></td>
+          <td class="blue-col hidden-col"><input type="text" class="massEvap" readonly /></td>
+          <td class="purple-col hidden-col"><input type="text" class="genRate" readonly /></td>
+          <td class="purple-col"><input type="text" class="reqVent" readonly /></td>
+        </tr>
+
+        <tr data-row="10">
+          <td>10</td>
+          <td><input type="text" class="mainChemical" /></td>
+          <td><input type="text" class="component" /></td>
+          <td><input type="number" class="pctComponent" step="0.01" /></td>
+          <td><input type="number" class="hoursPerDay" step="0.01" /></td>
+          <td><input type="number" class="volumePerDay" step="0.01" /></td>
+          <td><input type="number" class="pel" step="0.01" /></td>
+          <td><input type="number" class="mw" step="0.01" /></td>
+          <td><input type="number" class="sg" step="0.0001" /></td>
+          <td class="blue-col hidden-col"><input type="text" class="massEvap" readonly /></td>
+          <td class="purple-col hidden-col"><input type="text" class="genRate" readonly /></td>
+          <td class="purple-col"><input type="text" class="reqVent" readonly /></td>
+        </tr>
+
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="9" class="tfoot-label">Total Required Ventilation Rate (m³/hr)</td>
+          <td class="purple-col"><input type="text" id="totalReqVent" readonly /></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="section template">
+    <h3>Blower Specifications</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Model No.</th>
+          <th>Blower Ventilation Rate (m³/hr)</th>
+          <th>Quantity</th>
+          <th>Total Blower Ventilation Rate (m³/hr)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="text" id="blowerModel1"></td>
+          <td><input type="number" id="blowerRate1" step="1"></td>
+          <td><input type="number" id="blowerQty1" step="1"></td>
+          <td><input type="text" id="blowerTotal1" readonly></td>
+        </tr>
+        <tr>
+          <td><input type="text" id="blowerModel2"></td>
+          <td><input type="number" id="blowerRate2" step="1"></td>
+          <td><input type="number" id="blowerQty2" step="1"></td>
+          <td><input type="text" id="blowerTotal2" readonly></td>
+        </tr>
+        <tr>
+          <td><input type="text" id="blowerModel3"></td>
+          <td><input type="number" id="blowerRate3" step="1"></td>
+          <td><input type="number" id="blowerQty3" step="1"></td>
+          <td><input type="text" id="blowerTotal3" readonly></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="inline-grid" style="margin-top:0.5rem;">
+      <div class="field-pair">
+        <label for="deratePctBlower"><strong>Derating Factor (%)</strong></label>
+        <input type="number" id="deratePctBlower" value="90" min="50" max="100" step="1">
+      </div>
+      <div class="field-pair">
+        <label for="overallBlowerDerated"><strong>Overall Derated Blower Ventilation Rate (m³/hr)</strong></label>
+        <input type="text" id="overallBlowerDerated" readonly>
+      </div>
+      <div class="field-pair">
+        <label>Status</label>
+        <span id="statusBox" class="status-box"></span>
+      </div>
+    </div>
+
+    <p class="small">
+      Document to be attached : equipment blower/extractor configuration, equipment engineering drawing, blower/extractor datasheet, Safety Data Sheet (SDS).
+    </p>
+
+    <h3>Signatures</h3>
+    <div class="inline-grid">
+      <div class="signature-block">
+        <div class="template-label">Prepared by </div>
+        <div class="signature-space" id="preparedSignatureBox"></div>
+        <div class="signature-upload-wrapper">
+          <label class="signature-upload-label" for="preparedSignatureFile">Upload Signature</label><input type="file" id="preparedSignatureFile" class="signature-upload" accept="image/*">
+        </div>
+        <input type="text" placeholder="Name">
+        <input type="text" placeholder="Position" style="margin-top:0.15rem;">
+        <input type="text" placeholder="Date" style="margin-top:0.15rem;">
+      </div>
+      <div class="signature-block">
+        <div class="template-label">Reviewed by </div>
+        <div class="signature-space" id="reviewedSignatureBox"></div>
+        <div class="signature-upload-wrapper">
+          <label class="signature-upload-label" for="reviewedSignatureFile">Upload Signature</label><input type="file" id="reviewedSignatureFile" class="signature-upload" accept="image/*">
+        </div>
+        <input type="text" placeholder="Name">
+        <input type="text" placeholder="Position" style="margin-top:0.15rem;">
+        <input type="text" placeholder="Date" style="margin-top:0.15rem;">
+      </div>
+      <div class="signature-block">
+        <div class="template-label">Approved by </div>
+        <div class="signature-space" id="approvedSignatureBox"></div>
+        <div class="signature-upload-wrapper">
+          <label class="signature-upload-label" for="approvedSignatureFile">Upload Signature</label><input type="file" id="approvedSignatureFile" class="signature-upload" accept="image/*">
+        </div>
+        <input type="text" placeholder="Name">
+        <input type="text" placeholder="Position" style="margin-top:0.15rem;">
+        <input type="text" placeholder="Date" style="margin-top:0.15rem;">
+      </div>
+    </div>
+  </div>
+
+  <input type="hidden" id="totalReqTemplate" />
+
+  <script>
+    function recalcChem() {
+      const rows = document.querySelectorAll("#chemTable tbody tr");
+      let totalReq = 0;
+      rows.forEach(row => {
+        const pct   = parseFloat(row.querySelector(".pctComponent").value);
+        const hours = parseFloat(row.querySelector(".hoursPerDay").value);
+        const vol   = parseFloat(row.querySelector(".volumePerDay").value);
+        const pel   = parseFloat(row.querySelector(".pel").value);
+        const mw    = parseFloat(row.querySelector(".mw").value);
+        const sg    = parseFloat(row.querySelector(".sg").value);
+
+        const massOut = row.querySelector(".massEvap");
+        const genOut  = row.querySelector(".genRate");
+        const reqOut  = row.querySelector(".reqVent");
+
+        let mass = NaN, G = NaN, Q = NaN;
+
+        if (!isNaN(vol) && !isNaN(sg) && !isNaN(hours) && vol > 0 && sg > 0 && hours > 0) {
+          mass = (vol / hours) * sg * 1000;
+          if (massOut) massOut.value = Number(mass.toFixed(1)).toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+        } else {
+          if (massOut) massOut.value = "";
+        }
+
+        if (!isNaN(mass) && !isNaN(mw) && mass > 0 && mw > 0) {
+          G = (mass / 60) * 298 * 0.082 / mw * 0.001 / 0.01667;
+          if (genOut) genOut.value = Number(G.toFixed(3)).toLocaleString('en-US', {minimumFractionDigits: 3, maximumFractionDigits: 3});
+        } else {
+          if (genOut) genOut.value = "";
+        }
+
+        if (!isNaN(G) && !isNaN(pel) && !isNaN(pct) && G > 0 && pel > 0 && pct > 0) {
+          Q = 5 * G * 1000000 / pel * (pct / 100);
+          reqOut.value = Number(Q.toFixed(1)).toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+          totalReq += Q;
+        } else {
+          reqOut.value = "";
+        }
+      });
+
+      const totalField = document.getElementById("totalReqVent");
+      if (totalReq > 0) {
+        totalField.value = Number(totalReq.toFixed(1)).toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+      } else {
+        totalField.value = "";
+      }
+
+      const totalReqTemplate = document.getElementById("totalReqTemplate");
+      if (totalReq > 0) {
+        totalReqTemplate.value = totalReq.toFixed(1);
+      } else {
+        totalReqTemplate.value = "";
+      }
+
+      recalcBlowers();
+    }
+
+    function recalcVolume() {
+      const shape = document.querySelector('input[name="shape"]:checked')?.value || "cuboid";
+      const volumeField = document.getElementById("equipVolume");
+      let V = NaN;
+
+      if (shape === "cuboid") {
+        const L = parseFloat(document.getElementById("len")?.value);
+        const W = parseFloat(document.getElementById("wid")?.value);
+        const H = parseFloat(document.getElementById("hCuboid")?.value);
+        if (!isNaN(L) && !isNaN(W) && !isNaN(H) && L > 0 && W > 0 && H > 0) V = L * W * H;
+      } else if (shape === "cylinder") {
+        const R = parseFloat(document.getElementById("rad")?.value);
+        const H = parseFloat(document.getElementById("hCyl")?.value);
+        if (!isNaN(R) && !isNaN(H) && R > 0 && H > 0) V = 3.14 * R * R * H;
+      } else if (shape === "sphere") {
+        const R = parseFloat(document.getElementById("radSphere")?.value);
+        if (!isNaN(R) && R > 0) V = (4 / 3) * 3.14 * R * R * R;
+      } else if (shape === "other") {
+        const OV = parseFloat(document.getElementById("otherVolume")?.value);
+        if (!isNaN(OV) && OV > 0) V = OV;
+      }
+
+      if (volumeField) {
+        volumeField.value = (!isNaN(V))
+          ? Number(V.toFixed(2)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+          : "";
+      }
+    }
+
+    function recalcBlowers() {
+      function rowTotal(rateId, qtyId, outId) {
+        const rate = parseFloat(document.getElementById(rateId).value);
+        const qty  = parseFloat(document.getElementById(qtyId).value);
+        const out  = document.getElementById(outId);
+        let t = NaN;
+        if (!isNaN(rate) && !isNaN(qty)) {
+          t = rate * qty;
+          out.value = Number(t.toFixed(1)).toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+        } else {
+          out.value = "";
+        }
+        return isNaN(t) ? 0 : t;
+      }
+
+      const t1 = rowTotal("blowerRate1","blowerQty1","blowerTotal1");
+      const t2 = rowTotal("blowerRate2","blowerQty2","blowerTotal2");
+      const t3 = rowTotal("blowerRate3","blowerQty3","blowerTotal3");
+
+      const overall = t1 + t2 + t3;
+      const overallDeratedField = document.getElementById("overallBlowerDerated");
+      const derateEl = document.getElementById("deratePctBlower");
+      const deratePct = derateEl ? parseFloat(derateEl.value) : NaN;
+      const derate = (!isNaN(deratePct) && deratePct > 0) ? (deratePct / 100) : 0.9;
+      const statusBox = document.getElementById("statusBox");
+      const totalReqTemplate = parseFloat(document.getElementById("totalReqTemplate").value);
+
+      if (overall > 0) {
+        const ovDerated = overall * derate;
+        if (overallDeratedField) {
+          overallDeratedField.value = Number(ovDerated.toFixed(1)).toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+        }
+
+        if (!isNaN(totalReqTemplate) && totalReqTemplate > 0) {
+          if (ovDerated >= totalReqTemplate) {
+            statusBox.textContent = "Sufficient blower capacity";
+            statusBox.className = "status-box status-ok";
+          } else {
+            statusBox.textContent = "Insufficient blower capacity";
+            statusBox.className = "status-box status-bad";
+          }
+        } else {
+          statusBox.textContent = "";
+          statusBox.className = "status-box";
+        }
+      } else {
+        if (overallDeratedField) overallDeratedField.value = "";
+        statusBox.textContent = "";
+        statusBox.className = "status-box";
+      }
+    }
+
+
+      // Signature upload: draw image as background on the signature box (harder to save separately)
+      // Signature upload: render as <img> inside the box (prints reliably)
+function setupSignatureUpload(fileInputId, boxId) {
+  const fileInput = document.getElementById(fileInputId);
+  const box = document.getElementById(boxId);
+  if (!fileInput || !box) return;
+
+  fileInput.addEventListener("change", function () {
+    const file = this.files && this.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const dataUrl = e.target.result;
+
+      let img = box.querySelector("img");
+      if (!img) {
+        img = document.createElement("img");
+        box.innerHTML = "";
+        box.appendChild(img);
+      }
+      img.src = dataUrl;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+setupSignatureUpload("preparedSignatureFile", "preparedSignatureBox");
+      setupSignatureUpload("reviewedSignatureFile", "reviewedSignatureBox");
+      setupSignatureUpload("approvedSignatureFile", "approvedSignatureBox");
+
+
+    document.addEventListener("input", function(e) {
+      if (e.target.closest("#chemTable")) {
+        recalcChem();
+      }
+      if (
+        e.target.id === "len" || e.target.id === "wid" || e.target.id === "hCuboid" ||
+        e.target.id === "rad" || e.target.id === "hCyl" || e.target.id === "radSphere" || e.target.id === "otherVolume"
+      ) {
+        recalcVolume();
+      }
+      if (e.target.id.startsWith("blowerRate") || e.target.id.startsWith("blowerQty") || e.target.id === "deratePctBlower") {
+        recalcBlowers();
+      }
+    });
+
+    document.querySelectorAll('input[name="shape"]').forEach(r => {
+      r.addEventListener("change", () => {
+        const shape = document.querySelector('input[name="shape"]:checked')?.value || "cuboid";
+
+        document.getElementById("cuboidSection")?.classList.toggle("active", shape === "cuboid");
+        document.getElementById("cylinderSection")?.classList.toggle("active", shape === "cylinder");
+        document.getElementById("sphereSection")?.classList.toggle("active", shape === "sphere");
+        document.getElementById("otherSection")?.classList.toggle("active", shape === "other");
+
+        // Clear fields of hidden shapes (prevents stale values affecting calc)
+        if (shape !== "cuboid") {
+          const a = ["len","wid","hCuboid"]; a.forEach(id => { const el=document.getElementById(id); if(el) el.value=""; });
+        }
+        if (shape !== "cylinder") {
+          const a = ["rad","hCyl"]; a.forEach(id => { const el=document.getElementById(id); if(el) el.value=""; });
+        }
+        if (shape !== "sphere") {
+          const el = document.getElementById("radSphere"); if (el) el.value = "";
+        }
+        if (shape !== "other") {
+          const el = document.getElementById("otherVolume"); if (el) el.value = "";
+        }
+
+        recalcVolume();
+      });
+    });
+
+    // Initial calculation
+    recalcVolume();
+    recalcBlowers();
+    recalcChem();
+
+// Disable right-click on signature areas
+document.addEventListener("contextmenu", function (e) {
+  if (e.target.closest(".signature-space")) {
+    e.preventDefault();
+  }
+});
+  </script>
+
+  <div class="actions">
+    <button class="btn-print" onclick="window.print()">
+      🖨 Print Ventilation Plan
+    </button>
+  </div>
+</body>
+</html>
